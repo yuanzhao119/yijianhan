@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>意见函模板</title>
+    <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html-docx-js@0.3.1/dist/html-docx.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "SimSun", "宋体", serif;
+            font-size: 16pt;
+            background-color: #eeeeee;
+            margin: 0;
+            padding: 20px;
+        }
+        .toolbar {
+            max-width: 800px;
+            margin: 0 auto 16px;
+            display: flex;
+            gap:12px;
+        }
+        .toolbar button {
+            padding:8px 16px;
+            font-size:14px;
+            cursor:pointer;
+            border:1px solid #333;
+            background:#fff;
+            border-radius:4px;
+        }
+        .toolbar button:hover {
+            background:#f0f0f0;
+        }
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 30mm 25mm 25mm 25mm;
+            margin: 0 auto;
+            background: #ffffff;
+            box-shadow: 0 2px 8px #00000022;
+        }
+        [contenteditable="true"] {
+            outline: none;
+        }
+        .title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 2em;
+            font-size:17pt;
+        }
+        .para {
+            line-height: 2;
+            text-indent: 2em;
+            margin:0;
+        }
+        .para-noindent {
+            line-height:2;
+            margin:0;
+            text-indent:0;
+        }
+        .sign-area {
+            margin-top:4em;
+            text-align:right;
+        }
+
+        /* =========打印样式========= */
+        @media print {
+            body {
+                background:#fff;
+                padding:0;
+            }
+            .toolbar {
+                display: none !important;
+            }
+            .page {
+                width:100%;
+                height:auto;
+                padding:0mm;
+                box-shadow:none;
+                margin:0;
+            }
+            @page {
+                size: A4;
+                margin: 30mm 25mm 25mm 25mm;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="toolbar">
+    <button id="btnWord">下载 Word(.doc)</button>
+    <button id="btnPdf">下载 PDF</button>
+    <span style="font-size:13px;color:#666;margin-left:10px;">全部文字直接点击即可编辑；Ctrl+P可浏览器打印</span>
+</div>
+
+<div class="page" id="printWrap">
+    <div class="title" contenteditable="true">关于唐山市供热管网及供热设施提升改造项目—学院路管线（长宁道-长虹道）管网改造工程的意见函</div>
+
+    <p class="para-noindent" contenteditable="true">唐山市住房和城乡建设局：</p>
+
+    <p class="para" contenteditable="true">贵局《关于征求唐山市供热管网及供热设施提升改造项目—学院路管线（长宁道-长虹道）管网改造工程意见的函》已收悉。根据2026年4月20日在市住建局401会议室召开的《关于唐山市供热管网及供热设施提升改造项目涉及路北区城市道路占用挖掘恢复费用事宜工作调度会议纪要》工作调度会议纪要精神，经研究，原则同意学院路管线（长宁道-长虹道）管网改造工程。依据市政设施管理相关规定，现就涉及道路管理事项提出如下意见：</p>
+
+    <p class="para" contenteditable="true">1、请贵局按照国家有关法律法规完善相关施工手续，科学管理，规范施工，高质量完成项目建设。</p>
+    <p class="para" contenteditable="true">2、施工期间，请严格落实道路挖掘及修复标准，做好施工路段的道路成品保护工作，严禁野蛮施工，最大限度减少对市民出行的影响。</p>
+
+    <p class="para-noindent" contenteditable="true">特此函复。</p>
+
+    <div class="sign-area">
+        <p class="para-noindent" contenteditable="true">路北区市政设施服务所</p>
+        <p class="para-noindent" contenteditable="true">2026年6月1日</p>
+    </div>
+</div>
+
+<script>
+// 导出Word
+document.getElementById("btnWord").addEventListener('click', function(){
+    const contentHtml = document.getElementById('printWrap').innerHTML;
+    const doc = htmlDocx.asBlob(`
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <style>
+                    body{font-family:SimSun;font-size:16pt;}
+                    h1{text-align:center;font-size:17pt;}
+                    p{line-height:2;}
+                </style>
+            </head>
+            <body>${contentHtml}</body>
+        </html>
+    `);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(doc);
+    a.download = "意见函模板.doc";
+    a.click();
+    URL.revokeObjectURL(a.href);
+});
+
+// 导出PDF
+document.getElementById("btnPdf").addEventListener('click',function(){
+    const el = document.getElementById('printWrap');
+    const opt = {
+        margin: [30,25,25,25],
+        filename:'意见函模板.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale:2 },
+        jsPDF: { unit:'mm', format:'a4', orientation:'portrait' }
+    };
+    html2pdf().set(opt).from(el).save();
+});
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->
